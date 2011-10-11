@@ -1,0 +1,9 @@
+This is a mirror of http://www.vim.org/scripts/script.php?script_id=3770
+
+Python-mode is a vim plugin that allows you to use the pylint, rope, pydoc library in vim to provide features like python code looking for bugs, refactoring and some other usefull things.
+
+This plugin allow you create python code in vim very easily. There is no need to install the pylint or rope library on your system.
+
+See screencast here: http://t.co/3b0bzeXA (sory for quality, this my first screencasting)
+
+Python-mode on github: https://github.com/klen/python-mode
