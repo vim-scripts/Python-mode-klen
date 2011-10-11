@@ -7,6 +7,16 @@ features like python code looking for bugs, refactoring and some other usefull t
 This plugin allow you create python code in vim very easily.
 There is no need to install the pylint_ or rope_ library on your system.
 
+- Highlight syntax errors
+- Highlight and auto fix unused imports
+- Strong code completion
+- Code refactoring
+- Python documentation
+- Run python code
+- Go to definition
+- Powerfull customization
+- And more...
+
 See screencast here: http://t.co/3b0bzeXA (sory for quality, this my first screencasting)
 
 
@@ -14,18 +24,16 @@ Requirements
 ============
 
 - VIM >= 7.0 with python support
-- plugin-helpers_ -- vim plugin
 
 
 Installation
 ============
 
-- First plugin-helpers_ must be installed.
 - Just copy the plugin folders into your `~/.vim` directory.
 
 .. note:: Alternatively, if you are using pathogen_, clone the plugin into your ``bundle`` folder.
 
-.. note:: Also you can see vim help. :help PythonMode
+.. note:: Also you can see `:help PythonMode`
 
 Settings
 ========
@@ -122,10 +130,17 @@ Default keys
 
 .. note:: Also you can see vim help. :help PythonModeKeys
 
-**K** -- Show python docs
-**<C-Space>** -- Rope autocomplete
-**<Leader>r** -- Run python
-**<Leader>b** -- Set, unset breakpoint
+============== =============
+Keys           Command
+============== =============
+**K**          Show python docs
+-------------- -------------
+**<C-Space>**  Rope autocomplete
+-------------- -------------
+**<Leader>r**  Run python
+-------------- -------------
+**<Leader>b**  Set, unset breakpoint
+============== =============
 
 .. note:: See also :help ropevim.txt
 
@@ -135,10 +150,17 @@ Commands
 
 .. note:: Also you can see vim help. :help PythonModeCommands
 
-**Pydoc <args>** -- Show python documentation
-**PyLintToggle** -- Enable, disable pylint
-**PyLint** -- Check current buffer
-**Pyrun** -- Run current buffer
+============== =============
+Command        Description
+============== =============
+:Pydoc <args>  Show python documentation
+-------------- -------------
+PyLintToggle   Enable, disable pylint
+-------------- -------------
+PyLint         Check current buffer
+-------------- -------------
+Pyrun          Check current buffer
+============== =============
 
 .. note:: See also :help ropevim.txt
 
