@@ -185,6 +185,14 @@ Contributors
 * klen_ (Kirill Klenov)
 
 
+Changelog
+=========
+
+## 2011-10-11 0.1.2
+-------------------
+* First public release
+
+
 License
 =======
 
