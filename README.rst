@@ -2,7 +2,7 @@ Python-mode, Python in VIM
 ##########################
 
 Python-mode is a vim plugin that allows you to use the pylint_, rope_, pydoc_ library in vim to provide
-features like python code looking for bugs, refactoring and some other usefull things.
+features like python code looking for bugs, refactoring and some other useful things.
 
 This plugin allow you create python code in vim very easily.
 There is no need to install the pylint_ or rope_ library on your system.
@@ -14,10 +14,10 @@ There is no need to install the pylint_ or rope_ library on your system.
 - Python documentation
 - Run python code
 - Go to definition
-- Powerfull customization
+- Powerful customization
 - And more...
 
-See screencast here: http://t.co/3b0bzeXA (sory for quality, this my first screencasting)
+See screencast here: http://t.co/3b0bzeXA (sorry for quality, this my first screencast)
 
 
 Requirements
@@ -59,7 +59,7 @@ Default values: ::
     " Key for show python documentation
     let g:pymode_doc_key = 'K'
 
-    " Exetable command for documentation search
+    " Executable command for documentation search
     let g:pydoc = 'pydoc'
 
 Run python code
@@ -106,12 +106,33 @@ Default values: ::
     " Load rope plugin
     let g:pymode_rope = 1
 
-    " RopeVim settings
-    let g:ropevim_codeassist_maxfixes=10
-    let g:ropevim_guess_project=1
-    let g:ropevim_vim_completion=1
-    let g:ropevim_enable_autoimport=1
-    let g:ropevim_autoimport_modules = ["os", "shutil"]
+    " Auto create and open ropeproject
+    let g:pymode_rope_auto_project = 1
+
+    " Enable autoimport
+    let g:pymode_rope_enable_autoimport = 1
+
+    let g:pymode_rope_autoimport_underlineds = 0
+
+    let g:pymode_rope_codeassist_maxfixes = 10
+
+    let g:pymode_rope_sorted_completions = 1
+
+    let g:pymode_rope_extended_complete = 0
+
+    let g:pymode_rope_autoimport_modules = ["os","shutil","datetime"])
+
+    let g:pymode_rope_confirm_saving = 1
+
+    let g:pymode_rope_global_prefix = "<C-x>p"
+
+    let g:pymode_rope_local_prefix = "<C-c>r"
+
+    let g:pymode_rope_vim_completion = 1
+
+    let g:pymode_rope_guess_project = 1
+
+    let g:pymode_rope_goto_def_newwin = 0
 
 Other stuff
 -----------
@@ -123,9 +144,6 @@ Default values: ::
 
     " Key for set/unset breakpoint
     let g:pymode_breakpoint_key = '<leader>b'
-
-    " Load utils plugin
-    let g:pymode_utils = 1
 
     " Autoremove unused whitespaces
     let g:pymode_utils_whitespaces = 1
@@ -187,14 +205,27 @@ Contributing
 Development of pylint-mode happens at github: https://github.com/klen/python-mode
 
 
-Contributors
-=============
+Copyright
+=========
 
-* klen_ (Kirill Klenov)
+Copyright (C) 2011 Kirill Klenov (klen_)
+
+    **Rope**
+        Copyright (C) 2006-2010 Ali Gholami Rudi
+        Copyright (C) 2009-2010 Anton Gritsay
+
+    **Pylint**
+        Copyright (C) 2002-2008 LOGILAB S.A. (Paris, FRANCE).
 
 
 Changelog
 =========
+
+## 2011-10-15 0.2.0
+-------------------
+* Change rope variables (ropevim_<name> -> pymode_rope_<name>)
+* Add "pymode_rope_auto_project" option (default: 1)
+* Update and fix docs
 
 ## 2011-10-12 0.1.4
 -------------------
@@ -221,4 +252,3 @@ Licensed under a `GNU lesser general public license`_.
 .. _rope: http://rope.sourceforge.net/
 .. _pydoc: http://docs.python.org/library/pydoc.html
 .. _pathogen: https://github.com/tpope/vim-pathogen
-.. _plugin-helpers: https://github.com/klen/plugin-helpers

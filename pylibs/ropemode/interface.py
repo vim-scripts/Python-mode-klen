@@ -16,12 +16,7 @@ class RopeMode(object):
 
         self._prepare_refactorings()
         self.autoimport = None
-        self._init_mode()
 
-    def init(self):
-        """Initialize rope mode"""
-
-    def _init_mode(self):
         for attrname in dir(self):
             attr = getattr(self, attrname)
             if not callable(attr):
@@ -46,13 +41,15 @@ class RopeMode(object):
                 if isinstance(attr, type) and \
                    issubclass(attr, refactor.Refactoring):
                     refname = self._refactoring_name(attr)
+
                     @decorators.local_command(attr.key, 'P', None, refname)
                     def do_refactor(prefix, self=self, refactoring=attr):
                         initial_asking = prefix is None
                         refactoring(self, self.env).show(initial_asking=initial_asking)
                     setattr(self, refname, do_refactor)
 
-    def _refactoring_name(self, refactoring):
+    @staticmethod
+    def _refactoring_name(refactoring):
         return refactor.refactoring_name(refactoring)
 
     @decorators.rope_hook('before_save')
@@ -81,18 +78,22 @@ class RopeMode(object):
     @decorators.global_command('o')
     def open_project(self, root=None):
         if not root:
-            root = self.env.ask_directory('Rope project root folder: ')
+            if self.env.get('auto_project'):
+                root = self.env.get_cur_dir()
+            else:
+                root = self.env.ask_directory('Rope project root folder: ')
         if self.project is not None:
             self.close_project()
         address = rope.base.project._realpath(os.path.join(root,
                                                            '.ropeproject'))
-        if not os.path.exists(address):
-            if not self.env.y_or_n('Project not exists in %s, ' \
-                                   'create one?' % root):
+        if not os.path.exists(address) and not self.env.get('auto_project'):
+            if not self.env.y_or_n('Project not exists in %s, create one?' % root):
                 self.env.message("Project creation aborted")
                 return
+
         progress = self.env.create_progress('Opening [%s] project' % root)
         self.project = rope.base.project.Project(root)
+
         if self.env.get('enable_autoimport'):
             underlined = self.env.get('autoimport_underlineds')
             self.autoimport = autoimport.AutoImport(self.project,
@@ -302,22 +303,24 @@ class RopeMode(object):
                 modnames.append(modname)
         else:
             modules = []
-        def generate(handle):
+
+        def gen(handle):
             self.autoimport.generate_cache(task_handle=handle)
             self.autoimport.generate_modules_cache(modules, task_handle=handle)
-        refactor.runtask(self.env, generate, 'Generate autoimport cache')
+
+        refactor.runtask(self.env, gen, 'Generate autoimport cache')
 
     @decorators.global_command('f', 'P')
     def find_file(self, prefix):
-        file = self._base_find_file(prefix)
-        if file is not None:
-            self.env.find_file(file.real_path)
+        f = self._base_find_file(prefix)
+        if f is not None:
+            self.env.find_file(f.real_path)
 
     @decorators.global_command('4 f', 'P')
     def find_file_other_window(self, prefix):
-        file = self._base_find_file(prefix)
-        if file is not None:
-            self.env.find_file(file.real_path, other=True)
+        f = self._base_find_file(prefix)
+        if f is not None:
+            self.env.find_file(f.real_path, other=True)
 
     def _base_find_file(self, prefix):
         self._check_project()
@@ -329,14 +332,14 @@ class RopeMode(object):
 
     def _ask_file(self, files):
         names = []
-        for file in files:
-            names.append('<'.join(reversed(file.path.split('/'))))
+        for f in files:
+            names.append('<'.join(reversed(f.path.split('/'))))
         result = self.env.ask_values('Rope Find File: ', names)
         if result is not None:
             path = '/'.join(reversed(result.split('<')))
-            file = self.project.get_file(path)
-            return file
-        self.env.message('No file selected')
+            f = self.project.get_file(path)
+            return f
+        self.env.message('No f selected')
 
     @decorators.local_command('a j')
     def jump_to_global(self):
@@ -481,10 +484,12 @@ class RopeMode(object):
             changes.get_changed_resources(),
             self._get_moved_resources(changes, undo))
 
-    def _reload_buffers_for_changes(self, changed, moved={}):
+    def _reload_buffers_for_changes(self, changed, moved=None):
+        if moved is None:
+            moved = dict()
+
         filenames = [resource.real_path for resource in changed]
-        moved = dict([(resource.real_path, moved[resource].real_path)
-                      for resource in moved])
+        moved = dict((resource.real_path, moved[resource].real_path) for resource in moved)
         self.env.reload_files(filenames, moved)
 
     def _get_moved_resources(self, changes, undo=False):
@@ -621,7 +626,7 @@ class _CodeAssist(object):
         proposals = codeassist.code_assist(
             self.interface.project, self.source, self.offset,
             resource, maxfixes=maxfixes)
-        if self.env.get('sorted_completions', True):
+        if self.env.get('sorted_completions'):
             proposals = codeassist.sorted_proposals(proposals)
         if self.autoimport is not None:
             if self.starting.strip() and '.' not in self.expression:
