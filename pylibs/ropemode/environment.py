@@ -98,8 +98,7 @@ class Environment(object):
 
     @staticmethod
     def _completion_text(proposal):
-        return proposal.name
+        return proposal.name.partition(':')[0].strip()
 
     def _completion_data(self, proposal):
         return self._completion_text(proposal)
-
