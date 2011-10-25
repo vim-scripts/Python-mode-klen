@@ -12,9 +12,15 @@ setlocal foldmethod=indent
 setlocal formatoptions-=t
 setlocal nowrap
 setlocal number
-setlocal tabstop=4
 setlocal textwidth=80
+setlocal tabstop=4
 setlocal softtabstop=4
+setlocal shiftwidth=4
+setlocal shiftround
+setlocal smartindent
+setlocal smarttab
+setlocal expandtab
+setlocal autoindent
 
 " Fix path for project
 if g:pymode
@@ -50,7 +56,7 @@ if g:pymode_lint
     endif
 
     " DESC: Set commands
-    command! -buffer PyLintToggle :let g:pymode_lint = g:pymode_lint ? 0 : 1
+    command! -buffer PyLintToggle :call pymode_lint#Toggle()
     command! -buffer PyLint :call pymode_lint#Lint()
 
 endif

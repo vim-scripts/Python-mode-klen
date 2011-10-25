@@ -1,6 +1,13 @@
 Changelog
 =========
 
+## 2011-10-25 0.3.0
+-------------------
+* Add g:pymode_lint_minheight and g:pymode_lint_maxheight
+  options
+* Fix PyLintToggle
+* Fix Rope and PyLint libs loading
+
 ## 2011-10-21 0.2.12
 --------------------
 * Auto open cwindow with results
