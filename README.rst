@@ -25,6 +25,8 @@ Requirements
 ============
 
 - VIM >= 7.0 with python support
+  (also `--with-features=big` if you want use g:pymode_lint_signs)
+
 
 
 Installation
@@ -146,6 +148,8 @@ Default values: ::
     let g:pymode_rope_guess_project = 1
 
     let g:pymode_rope_goto_def_newwin = 0
+
+    let g:pymode_rope_always_show_complete_menu = 0
 
 Other stuff
 -----------
