@@ -46,6 +46,8 @@ PythonMode. These options should be set in your vimrc.
 
 |'pymode_lint'|                     Turns off pylint script
 
+|'pymode_lint_checker'|             Switch code checkers (pylint, pyflakes)
+
 |'pymode_lint_config'|              Filepath to pylinc configuration
 
 |'pymode_lint_write'|               Check code every save
@@ -133,12 +135,19 @@ Default: 1.
 If this option is set to 0 then pylint script is disabled.
 
 ------------------------------------------------------------------------------
+                                                         *'pymode_lint_checker'*
+Values: "pylint" or "pyflakes"
+Default: "pylint".
+
+This option set code checker.
+
+------------------------------------------------------------------------------
                                                           *'pymode_lint_config'*
 Values: 'Path to pylint configuration file'
 Default: "$HOME/.pylintrc"
 
 If this option is set path to pylint configuration. If configuration not found
-use file '.pylintrc' from pymode plugin directory.
+uses file 'pylintrc' from python-mode sources.
 
 ------------------------------------------------------------------------------
                                                            *'pymode_lint_write'*

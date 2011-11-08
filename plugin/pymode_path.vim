@@ -1,3 +1,6 @@
+let g:pymode_version = "0.4.0"
+command! PymodeVersion echomsg "Current python-mode version: " . g:pymode_version
+
 " OPTION: g:pymode -- bool. Run pymode.
 call helpers#SafeVar("g:pymode", 1)
 
