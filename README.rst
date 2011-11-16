@@ -18,7 +18,7 @@ There is no need to install the pylint_, rope_ or any used python library on you
 - Virtualenv support
 - And more...
 
-See screencast here: http://t.co/3b0bzeXA (sorry for quality, this my first screencast)
+See screencast here: http://t.co/3b0bzeXA (sorry for quality, this is my first screencast)
 
 
 .. contents::
@@ -294,7 +294,7 @@ Try use pyflakes_, see ``:h 'pymode_lint_checker'``.
 
 
 
-Buctracker
+Bugtracker
 ===========
 
 If you have any suggestions, bug reports or
