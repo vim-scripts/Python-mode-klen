@@ -77,6 +77,8 @@ if version < 600
   syntax clear
 elseif exists("b:current_syntax")
   finish
+elseif exists("g:pymode_syntax") && g:pymode_syntax == 0
+  finish
 endif
 
 if exists("python_highlight_all") && python_highlight_all != 0
@@ -247,6 +249,7 @@ if exists("python_highlight_builtin_objs") && python_highlight_builtin_objs != 0
   " Builtin objects and types
   syn keyword pythonBuiltinObj	True False Ellipsis None NotImplemented
   syn keyword pythonBuiltinObj	__debug__ __doc__ __file__ __name__ __package__
+  syn keyword pythonBuiltinObj self
 endif
 
 if exists("python_highlight_builtin_funcs") && python_highlight_builtin_funcs != 0
