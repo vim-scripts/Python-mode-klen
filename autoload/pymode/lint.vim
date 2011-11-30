@@ -20,14 +20,28 @@ endfunction
 
 fun! pymode#lint#Toggle() "{{{
     let g:pymode_lint = g:pymode_lint ? 0 : 1
-    if g:pymode_lint
-        echomsg "PyLint enabled."
-    else
-        echomsg "PyLint disabled."
-    endif
+    call pymode#lint#toggle_win(g:pymode_lint, "Pymode lint")
+endfunction "}}}
+
+fun! pymode#lint#ToggleWindow() "{{{
+    let g:pymode_lint_cwindow = g:pymode_lint_cwindow ? 0 : 1
+    call pymode#lint#toggle_win(g:pymode_lint_cwindow, "Pymode lint cwindow")
 endfunction "}}}
 
 fun! pymode#lint#ToggleChecker() "{{{
     let g:pymode_lint_checker = g:pymode_lint_checker == "pylint" ? "pyflakes" : "pylint"
-    echomsg "PyLint checker: " . g:pymode_lint_checker
+    echomsg "Pymode lint checker: " . g:pymode_lint_checker
+endfunction "}}}
+
+fun! pymode#lint#toggle_win(toggle, msg) "{{{
+    if a:toggle
+        echomsg a:msg." enabled"
+        botright cwindow
+        if &buftype == "quickfix"
+            wincmd p
+        endif
+    else
+        echomsg a:msg." disabled"
+        cclose
+    endif
 endfunction "}}}

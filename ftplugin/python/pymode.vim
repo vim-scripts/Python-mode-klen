@@ -7,6 +7,9 @@ if !pymode#Default('g:pymode_syntax', 1) || g:pymode_syntax
     let python_highlight_all=1
 endif
 
+
+" Options {{{
+
 " Python indent options
 if !pymode#Default('g:pymode_options_indent', 1) || g:pymode_options_indent
     setlocal cinwords=if,elif,else,for,while,try,except,finally,def,class
@@ -27,7 +30,7 @@ if !pymode#Default('g:pymode_options_fold', 1) || g:pymode_options_fold
     setlocal foldlevel=99
     setlocal foldmethod=indent
 endif
-      
+
 " Python other options
 if !pymode#Default('g:pymode_options_other', 1) || g:pymode_options_other
     setlocal complete+=t
@@ -36,6 +39,11 @@ if !pymode#Default('g:pymode_options_other', 1) || g:pymode_options_other
     setlocal nowrap
     setlocal textwidth=80
 endif
+
+" }}}
+
+
+" Paths {{{
 
 " Fix path for project
 if g:pymode
@@ -48,7 +56,11 @@ if g:pymode_virtualenv && exists("$VIRTUAL_ENV")
     call pymode#virtualenv#Activate()
 endif
 
-" Python documentation
+" }}}
+
+
+" Documentation {{{
+
 if g:pymode_doc
 
     " DESC: Set commands
@@ -59,12 +71,15 @@ if g:pymode_doc
 
 endif
 
+" }}}
+
 
 " PyLint
 if g:pymode_lint
 
     " DESC: Set commands
     command! -buffer -nargs=0 PyLintToggle :call pymode#lint#Toggle()
+    command! -buffer -nargs=0 PyLintWindowToggle :call pymode#lint#ToggleWindow()
     command! -buffer -nargs=0 PyLintCheckerToggle :call pymode#lint#ToggleChecker()
     command! -buffer -nargs=0 PyLint :call pymode#lint#Check()
 
@@ -85,7 +100,7 @@ if g:pymode_rope
     noremap <silent> <buffer> <C-c>m :emenu Rope.<TAB>
     inoremap <silent> <buffer> <S-TAB> <C-R>=RopeLuckyAssistInsertMode()<CR>
 
-    let s:prascm = g:pymode_rope_always_show_complete_menu ? "<C-P>" : ""    
+    let s:prascm = g:pymode_rope_always_show_complete_menu ? "<C-P>" : ""
     exe "inoremap <silent> <buffer> <Nul> <C-R>=RopeCodeAssistInsertMode()<CR>" . s:prascm
     exe "inoremap <silent> <buffer> <C-space> <C-R>=RopeCodeAssistInsertMode()<CR>" . s:prascm
 
@@ -117,3 +132,5 @@ call pymode#Default("g:pymode_utils_whitespaces", 1)
 if g:pymode_utils_whitespaces
     au BufWritePre <buffer> :call setline(1,map(getline(1,"$"),'substitute(v:val,"\\s\\+$","","")'))
 endif
+
+" vim: fdm=marker:fdl=0
