@@ -7,9 +7,9 @@ features like python code looking for bugs, refactoring and some other useful th
 This plugin allow you create python code in vim very easily.
 There is no need to install the pylint_, rope_ or any used python library on your system.
 
+- Python objects and motion (]], 3[[, ]]m, vac, vim, dac, cim, ...)
 - Highlight syntax errors
 - Highlight and auto fix unused imports
-- Python objects and motion (]], ]m, vac, vim, dim, ...)
 - Strong code completion
 - Code refactoring
 - Python documentation
@@ -19,7 +19,7 @@ There is no need to install the pylint_, rope_ or any used python library on you
 - Virtualenv support
 - And more...
 
-See screencast here: http://t.co/3b0bzeXA (sorry for quality, this is my first screencast)
+See (old) screencast here: http://t.co/3b0bzeXA (sorry for quality, this is my first screencast)
 
 
 .. contents::
@@ -28,10 +28,10 @@ See screencast here: http://t.co/3b0bzeXA (sorry for quality, this is my first s
 Changelog
 =========
 
-## 2011-11-30 0.5.0
+## 2012-01-06 0.5.1
 -------------------
-* Add python objects and motions (beta)
-  :h pymode_motion
+* Happy new year!
+* Objects and motion  fixes
 
 
 Requirements
@@ -189,7 +189,7 @@ Default values: ::
 
     let g:pymode_rope_extended_complete = 1
 
-    let g:pymode_rope_autoimport_modules = ["os","shutil","datetime"])
+    let g:pymode_rope_autoimport_modules = ["os","shutil","datetime"]
 
     let g:pymode_rope_confirm_saving = 1
 
@@ -211,7 +211,7 @@ Other stuff
 
 Default values: ::
 
-    " Load motion plugin
+    " Load python objects and motion
     let g:pymode_motion = 1
 
     " Load breakpoints plugin
@@ -248,19 +248,19 @@ Default values: ::
     let g:pymode_syntax_all = 1
 
     " Highlight "print" as function
-    leg g:pymode_syntax_print_as_function = 0
+    let g:pymode_syntax_print_as_function = 0
 
     " Highlight indentation errors
-    leg g:pymode_syntax_indent_errors = g:pymode_syntax_all
+    let g:pymode_syntax_indent_errors = g:pymode_syntax_all
 
     " Highlight trailing spaces
-    leg g:pymode_syntax_space_errors = g:pymode_syntax_all
+    let g:pymode_syntax_space_errors = g:pymode_syntax_all
 
     " Highlight string formatting
-    leg g:pymode_syntax_string_formatting = g:pymode_syntax_all
+    let g:pymode_syntax_string_formatting = g:pymode_syntax_all
 
     " Highlight str.format syntax
-    leg g:pymode_syntax_string_format = g:pymode_syntax_all
+    let g:pymode_syntax_string_format = g:pymode_syntax_all
 
     " Highlight string.Template syntax
     let g:pymode_syntax_string_templates = g:pymode_syntax_all
@@ -305,11 +305,11 @@ Keys           Command
 -------------- -------------
 ]m             Jump on next class or method (normal, visual, operator modes)
 -------------- -------------
-ac             Select a class. Ex: vac, dac, yac, cac (normal, operator modes)
+ac c           Select a class. Ex: vac, dac, dc, yac, yc, cac, cc (normal, operator modes)
 -------------- -------------
 ic             Select inner class. Ex: vic, dic, yic, cic (normal, operator modes)
 -------------- -------------
-am             Select a function or method. Ex: vam, dam, yam, cam (normal, operator modes)
+am m           Select a function or method. Ex: vam, dam, dm, yam, ym, cam, cm (normal, operator modes)
 -------------- -------------
 im             Select inner function or method. Ex: vim, dim, yim, cim (normal, operator modes)
 ============== =============
@@ -409,6 +409,10 @@ License
 =======
 
 Licensed under a `GNU lesser general public license`_.
+
+If you like this plugin, you can send me postcard :) 
+My address is here: Russia, 143400, Krasnogorsk, Shkolnaya 1-19
+Thanks for support!
 
 
 .. _GNU lesser general public license: http://www.gnu.org/copyleft/lesser.html
