@@ -7,7 +7,7 @@ features like python code looking for bugs, refactoring and some other useful th
 This plugin allow you create python code in vim very easily.
 There is no need to install the pylint_, rope_ or any used python library on your system.
 
-- Python objects and motion (]], 3[[, ]]m, vac, vim, dac, cim, ...)
+- Python objects and motion (]], 3[[, ]]M, vaC, viM, daC, ciM, ...)
 - Highlight syntax errors
 - Highlight and auto fix unused imports
 - Strong code completion
@@ -28,10 +28,12 @@ See (old) screencast here: http://t.co/3b0bzeXA (sorry for quality, this is my f
 Changelog
 =========
 
-## 2012-01-06 0.5.1
+## 2012-01-17 0.5.5
 -------------------
-* Happy new year!
-* Objects and motion  fixes
+* Add a sign for info messages from pylint.
+  (c) Fredrik Henrysson
+* Change motion keys: vic - viC, dam - daM and etc
+* Add 'g:pymode_lint_onfly' option
 
 
 Requirements
@@ -136,6 +138,9 @@ Default values: ::
     " values (pylint, pyflakes)
     let g:pymode_lint_checker = "pylint"
 
+    " Run linter on the fly
+    let g:pymode_lint_onfly = 0
+
     " Pylint configuration file
     " If file not found use 'pylintrc' from python-mode plugin directory
     let g:pymode_lint_config = "$HOME/.pylintrc"
@@ -145,6 +150,9 @@ Default values: ::
 
     " Auto open cwindow if errors be finded
     let g:pymode_lint_cwindow = 1
+
+    " Show error message if cursor placed at the error line
+    let g:pymode_lint_message = 1
 
     " Auto jump on first error
     let g:pymode_lint_jump = 0
@@ -301,17 +309,17 @@ Keys           Command
 -------------- -------------
 ]]             Jump on next class or function  (normal, visual, operator modes)
 -------------- -------------
-[m             Jump on previous class or method (normal, visual, operator modes)
+[M             Jump on previous class or method (normal, visual, operator modes)
 -------------- -------------
-]m             Jump on next class or method (normal, visual, operator modes)
+]M             Jump on next class or method (normal, visual, operator modes)
 -------------- -------------
-ac c           Select a class. Ex: vac, dac, dc, yac, yc, cac, cc (normal, operator modes)
+aC C           Select a class. Ex: vaC, daC, dC, yaC, yC, caC, cC (normal, operator modes)
 -------------- -------------
-ic             Select inner class. Ex: vic, dic, yic, cic (normal, operator modes)
+iC             Select inner class. Ex: viC, diC, yiC, ciC (normal, operator modes)
 -------------- -------------
-am m           Select a function or method. Ex: vam, dam, dm, yam, ym, cam, cm (normal, operator modes)
+aM M           Select a function or method. Ex: vaM, daM, dM, yaM, yM, caM, cM (normal, operator modes)
 -------------- -------------
-im             Select inner function or method. Ex: vim, dim, yim, cim (normal, operator modes)
+iM             Select inner function or method. Ex: viM, diM, yiM, ciM (normal, operator modes)
 ============== =============
 
 .. note:: See also ``:help ropevim.txt``
@@ -411,7 +419,7 @@ License
 Licensed under a `GNU lesser general public license`_.
 
 If you like this plugin, you can send me postcard :) 
-My address is here: Russia, 143400, Krasnogorsk, Shkolnaya 1-19
+My address is here: Russia, 143401, Krasnogorsk, Shkolnaya 1 kv. 19
 Thanks for support!
 
 

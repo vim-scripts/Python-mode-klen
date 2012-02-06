@@ -1,4 +1,4 @@
-let g:pymode_version = "0.5.1"
+let g:pymode_version = "0.5.6"
 
 com! PymodeVersion echomsg "Current python-mode version: " . g:pymode_version
 
@@ -38,6 +38,12 @@ if !pymode#Default("g:pymode_lint", 1) || g:pymode_lint
     " OPTION: g:pymode_lint_write -- bool. Check code every save.
     call pymode#Default("g:pymode_lint_write", 1)
 
+    " OPTION: g:pymode_lint_onfly -- bool. Check code every save.
+    call pymode#Default("g:pymode_lint_onfly", 0)
+
+    " OPTION: g:pymode_lint_message -- bool. Show current line error message
+    call pymode#Default("g:pymode_lint_message", 1)
+
     " OPTION: g:pymode_lint_checker -- str. Use pylint of pyflakes for check.
     call pymode#Default("g:pymode_lint_checker", "pylint")
 
@@ -64,6 +70,7 @@ if !pymode#Default("g:pymode_lint", 1) || g:pymode_lint
         sign define C text=CC texthl=Comment
         sign define R text=RR texthl=Visual
         sign define E text=EE texthl=Error
+        sign define I text=II texthl=Info
 
     endif
 
@@ -85,12 +92,12 @@ from pyflakes import checker
 
 # Pylint setup
 linter = lint.PyLinter()
-pylint_re = re.compile('^[^:]+:(\d+): \[([EWRCI]+)[^\]]*\] (.*)$')
+pylint_re = re.compile('^(?:.:)?[^:]+:(\d+): \[([EWRCI]+)[^\]]*\] (.*)$')
 
 checkers.initialize(linter)
+linter.load_file_configuration(vim.eval("g:pymode_lint_config"))
 linter.set_option("output-format", "parseable")
 linter.set_option("reports", 0)
-linter.load_file_configuration(vim.eval("g:pymode_lint_config"))
 
 # Pyflakes setup
 
@@ -157,10 +164,17 @@ endif
 
 if !pymode#Default("g:pymode_breakpoint", 1) || g:pymode_breakpoint
 
+    if !pymode#Default("g:pymode_breakpoint_cmd", "import ipdb; ipdb.set_trace() ### XXX BREAKPOINT")  && has("python")
+python << EOF
+try:
+    import ipdb
+except ImportError:
+    vim.command('let g:pymode_breakpoint_cmd = "import pdb; pdb.set_trace() ### XXX BREAKPOINT"')
+EOF
+    endif
+
     " OPTION: g:pymode_breakpoint_key -- string. Key for set/unset breakpoint.
     call pymode#Default("g:pymode_breakpoint_key", "<leader>b")
-
-    call pymode#Default("g:pymode_breakpoint_cmd", "import ipdb; ipdb.set_trace() ### XXX BREAKPOINT")
 
 endif
 
@@ -273,10 +287,9 @@ if !pymode#Default("g:pymode_rope", 1) || g:pymode_rope
     endfunction "}}}
 
     fun! RopeOmni(findstart, base) "{{{
-        " TODO: Fix omni
-        if a:findstart == 1
-            let start = col('.') - 1
-            return start
+        if a:findstart
+            py ropevim._interface._find_start()
+            return g:pymode_offset
         else
             call RopeOmniComplete()
             return g:pythoncomplete_completions

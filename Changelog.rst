@@ -1,6 +1,31 @@
 Changelog
 =========
 
+## 2012-02-06 0.5.6
+-------------------
+* Fix 'g:pymode_syntax' option
+* Show error message in bottom part of screen
+  see 'g:pymode_lint_message'
+* Fix pylint for windows users
+* Fix breakpoint command (Use pdb when idpb not installed)
+
+## 2012-01-17 0.5.5
+-------------------
+* Add a sign for info messages from pylint.
+  (c) Fredrik Henrysson
+* Change motion keys: vic - viC, dam - daM and etc
+* Add 'g:pymode_lint_onfly' option
+
+## 2012-01-09 0.5.3
+-------------------
+* Prevent the configuration from breaking python-mode
+  (c) Dirk Wallenstein
+
+## 2012-01-08 0.5.2
+-------------------
+* Fix ropeomnicompletion
+* Add preview documentation
+
 ## 2012-01-06 0.5.1
 -------------------
 * Happy new year!
@@ -63,7 +88,6 @@ Changelog
 -------------------
 * Add 'g:pymode_rope_always_show_complete_menu' option
 * Some pylint fixes
-
 
 ## 2011-10-25 0.3.0
 -------------------

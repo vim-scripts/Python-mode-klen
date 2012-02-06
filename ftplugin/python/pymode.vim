@@ -78,6 +78,9 @@ endif
 
 if g:pymode_lint
 
+    " DESC: Show message flag
+    let b:show_message = 0
+
     " DESC: Set commands
     command! -buffer -nargs=0 PyLintToggle :call pymode#lint#Toggle()
     command! -buffer -nargs=0 PyLintWindowToggle :call pymode#lint#ToggleWindow()
@@ -87,6 +90,15 @@ if g:pymode_lint
     " DESC: Set autocommands
     if g:pymode_lint_write
         au BufWritePost <buffer> PyLint
+    endif
+
+    if g:pymode_lint_onfly
+        au InsertLeave <buffer> PyLint
+    endif
+
+    if g:pymode_lint_message
+        au CursorHold <buffer> call pymode#lint#show_errormessage()
+        au CursorMoved <buffer> call pymode#lint#show_errormessage()
     endif
 
 endif
