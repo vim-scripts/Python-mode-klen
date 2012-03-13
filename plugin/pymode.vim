@@ -1,4 +1,4 @@
-let g:pymode_version = "0.5.8"
+let g:pymode_version = "0.6.0"
 
 com! PymodeVersion echomsg "Current python-mode version: " . g:pymode_version
 
@@ -51,6 +51,8 @@ endif
 
 if !pymode#Default("g:pymode_lint", 1) || g:pymode_lint
 
+    let g:qf_list = []
+
     " OPTION: g:pymode_lint_write -- bool. Check code every save.
     call pymode#Default("g:pymode_lint_write", 1)
 
@@ -60,8 +62,8 @@ if !pymode#Default("g:pymode_lint", 1) || g:pymode_lint
     " OPTION: g:pymode_lint_message -- bool. Show current line error message
     call pymode#Default("g:pymode_lint_message", 1)
 
-    " OPTION: g:pymode_lint_checker -- str. Use pylint of pyflakes for check.
-    call pymode#Default("g:pymode_lint_checker", "pylint")
+    " OPTION: g:pymode_lint_checker -- str. Choices are: pylint, pyflakes, pep8, mccabe
+    call pymode#Default("g:pymode_lint_checker", "pyflakes,pep8,mccabe")
 
     " OPTION: g:pymode_lint_config -- str. Path to pylint config file
     call pymode#Default("g:pymode_lint_config", $HOME . "/.pylintrc")
@@ -72,11 +74,21 @@ if !pymode#Default("g:pymode_lint", 1) || g:pymode_lint
     " OPTION: g:pymode_lint_jump -- int. Jump on first error.
     call pymode#Default("g:pymode_lint_jump", 0)
 
+    " OPTION: g:pymode_lint_hold -- int. Hold cursor on current window when
+    " quickfix open
+    call pymode#Default("g:pymode_lint_hold", 0)
+
     " OPTION: g:pymode_lint_minheight -- int. Minimal height of pymode lint window
     call pymode#Default("g:pymode_lint_minheight", 3)
 
     " OPTION: g:pymode_lint_maxheight -- int. Maximal height of pymode lint window
     call pymode#Default("g:pymode_lint_maxheight", 6)
+
+    " OPTION: g:pymode_lint_ignore -- string. Skip errors and warnings (e.g. E4,W)
+    call pymode#Default("g:pymode_lint_ignore", "E501")
+
+    " OPTION: g:pymode_lint_select -- string. Select errors and warnings (e.g. E4,W)
+    call pymode#Default("g:pymode_lint_select", "")
 
     " OPTION: g:pymode_lint_signs -- bool. Place error signs
     if !pymode#Default("g:pymode_lint_signs", 1) || g:pymode_lint_signs
@@ -95,82 +107,8 @@ if !pymode#Default("g:pymode_lint", 1) || g:pymode_lint
         let g:pymode_lint_config = expand("<sfile>:p:h:h") . "/pylint.ini"
     endif
 
-python << EOF
-import os
-import StringIO
-import _ast
-import re
+    py from pymode import check_file
 
-from logilab.astng.builder import MANAGER
-from pylint import lint, checkers
-from pyflakes import checker
-
-
-# Pylint setup
-linter = lint.PyLinter()
-pylint_re = re.compile('^(?:.:)?[^:]+:(\d+): \[([EWRCI]+)[^\]]*\] (.*)$')
-
-checkers.initialize(linter)
-linter.load_file_configuration(vim.eval("g:pymode_lint_config"))
-linter.set_option("output-format", "parseable")
-linter.set_option("reports", 0)
-
-# Pyflakes setup
-
-# Pylint check
-def pylint():
-    filename = vim.current.buffer.name
-    MANAGER.astng_cache.clear()
-    linter.reporter.out = StringIO.StringIO()
-    linter.check(filename)
-    qf = []
-    for w in linter.reporter.out.getvalue().split('\n'):
-        test = pylint_re.match(w)
-        test and qf.append(dict(
-                filename = filename,
-                bufnr = vim.current.buffer.number,
-                lnum = test.group(1),
-                type = test.group(2),
-                text = test.group(3).replace("'", "\""),
-            ))
-    vim.command('let b:qf_list = %s' % repr(qf))
-
-# Pyflakes check
-def pyflakes():
-    filename = vim.current.buffer.name
-    codeString = file(filename, 'U').read() + '\n'
-    qf = []
-    try:
-        tree = compile(codeString, filename, "exec", _ast.PyCF_ONLY_AST)
-
-    except SyntaxError, value:
-        msg = value.args[0]
-        if codeString is None:
-            vim.command('echoerr "%s: problem decoding source"' % filename)
-        else:
-            lineno, _, text = value.lineno, value.offset, value.text
-            qf.append(dict(
-                filename = filename,
-                bufnr = vim.current.buffer.number,
-                lnum = str(lineno),
-                text = msg,
-                type = 'E'
-            ))
-
-    else:
-        w = checker.Checker(tree, filename)
-        w.messages.sort(lambda a, b: cmp(a.lineno, b.lineno))
-        for w in w.messages:
-            qf.append(dict(
-                filename = filename,
-                bufnr = vim.current.buffer.number,
-                lnum = str(w.lineno),
-                text = w.message % w.message_args,
-                type = 'E'
-            ))
-
-    vim.command('let b:qf_list = %s' % repr(qf))
-EOF
 endif
 
 " }}}
@@ -194,8 +132,9 @@ if !pymode#Default("g:pymode_breakpoint", 1) || g:pymode_breakpoint
 
     if !pymode#Default("g:pymode_breakpoint_cmd", "import ipdb; ipdb.set_trace() ### XXX BREAKPOINT")  && has("python")
 python << EOF
+from imp import find_module
 try:
-    import ipdb
+    find_module('ipdb')
 except ImportError:
     vim.command('let g:pymode_breakpoint_cmd = "import pdb; pdb.set_trace() ### XXX BREAKPOINT"')
 EOF
@@ -258,6 +197,9 @@ if !pymode#Default("g:pymode_rope", 1) || g:pymode_rope
     " OPTION: g:pymode_rope_local_prefix -- string.
     call pymode#Default("g:pymode_rope_local_prefix", "<C-c>r")
 
+    " OPTION: g:pymode_rope_short_prefix -- string.
+    call pymode#Default("g:pymode_rope_short_prefix", "<C-c>")
+
     " OPTION: g:pymode_rope_vim_completion -- bool.
     call pymode#Default("g:pymode_rope_vim_completion", 1)
 
@@ -318,6 +260,9 @@ endif
 
 " }}}
 
+
+" OPTION: g:pymode_folding -- bool. Enable python-mode folding for pyfiles.
+call pymode#Default("g:pymode_folding", 1)
 
 " OPTION: g:pymode_utils_whitespaces -- bool. Remove unused whitespaces on save
 call pymode#Default("g:pymode_utils_whitespaces", 1)

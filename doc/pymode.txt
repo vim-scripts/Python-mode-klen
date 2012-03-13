@@ -6,7 +6,7 @@
    (__)   (__)  (__) (_) (_)(_____)(_)\_)   (_/\/\_)(_____)(____/(____)     ~
 
 
-                          Version: 0.5.5
+                          Version: 0.6.0
 
 ==============================================================================
 CONTENTS                                                  *Python-mode-contents*
@@ -53,7 +53,11 @@ PythonMode. These options should be set in your vimrc.
 
 |'pymode_lint'|                     Turns off pylint script
 
-|'pymode_lint_checker'|             Switch code checkers (pylint, pyflakes)
+|'pymode_lint_checker'|             Switch code checkers (pylint, pyflakes, pep8, mccabe)
+
+|'pymode_lint_ignore'|              Skip errors and warnings
+
+|'pymode_lint_select'|              Select errors and warnings
 
 |'pymode_lint_onfly'|               Run linter on the fly
 
@@ -69,11 +73,15 @@ PythonMode. These options should be set in your vimrc.
 
 |'pymode_lint_jump'|                Auto jump on first error
 
+|'pymode_lint_hold'|                Hold cursor in current window
+
 |'pymode_lint_minheight'|           Minimal height of pylint error window
 
 |'pymode_lint_maxheight'|           Maximal height of pylint error window
 
 |'pymode_rope'|                     Turns off rope script
+
+|'pymode_folding'|                  Turns on/off python folding
 
 |'pymode_breakpoint'|               Turns off breakpoint script
 
@@ -89,9 +97,6 @@ PythonMode. These options should be set in your vimrc.
 
 |'pymode_options_indent'|           Set default pymode options for
                                   python indentation
-
-|'pymode_options_fold'|             Set default pymode options for
-                                  python folding
 
 |'pymode_options_other'|            Set default pymode options for
                                   python codding
@@ -144,10 +149,32 @@ If this option is set to 0 then pylint script is disabled.
 
 ------------------------------------------------------------------------------
                                                          *'pymode_lint_checker'*
-Values: "pylint" or "pyflakes"
-Default: "pylint".
+Values: "pylint", "pyflakes", "pep8", "mccabe"
+        You can set many checkers. E.g. "pyflakes,pep8,mccabe" ~
 
-This option set code checker.
+Default: "pyflakes,pep8,mccabe".
+
+This option set code checkers.
+
+------------------------------------------------------------------------------
+                                                          *'pymode_lint_ignore'*
+Values: IDs of errors, separated by commas or empty string
+        E.g. "E501,W002", "E2,W" (Skip all Warnings and Errors startswith E2) and etc ~
+
+Default: "E501".
+
+Skip errors and warnings.
+See also: |'pymode_lint_select'|, |'pymode_lint_config'|
+
+------------------------------------------------------------------------------
+                                                         *'pymode_lint_select'*
+Values: IDs of errors, separated by commas or empty string
+        E.g. "W002,C" Force W002 and all C-ids ~
+
+Default: "".
+
+Select errors and warnings.
+See also: |'pymode_lint_ignore'|, |'pymode_lint_config'|
 
 ------------------------------------------------------------------------------
                                                            *'pymode_lint_onfly'*
@@ -163,6 +190,8 @@ Default: "$HOME/.pylintrc"
 
 If this option is set path to pylint configuration. If configuration not found
 uses file 'pylintrc' from python-mode sources.
+
+See also: |'pymode_lint_ignore'|, |'pymode_lint_select'|
 
 ------------------------------------------------------------------------------
                                                            *'pymode_lint_write'*
@@ -198,6 +227,14 @@ Values: 0 or 1.
 Default: 0.
 
 If this option is set to 0 then pylint not jump on first error.
+
+------------------------------------------------------------------------------
+                                                            *'pymode_lint_hold'*
+Values: 0 or 1.
+Default: 0.
+
+If this option is set to 0 then pylint switch on quickfix window when it open
+Not working when |'pymode_lint_jump'| enabled.
 
 ------------------------------------------------------------------------------
                                                        *'pymode_lint_minheight'*
@@ -281,16 +318,12 @@ If this option is set to 1, pymode enable next options for python buffers: >
     setlocal autoindent
 <
 ------------------------------------------------------------------------------
-                                                         *'pymode_options_fold'*
+                                                              *'pymode_folding'*
 Values: 0 or 1.
 Default: 1.
 
-If this option is set to 1, pymode enable next options for python buffers: >
+If this option is set to 1, pymode enable python-folding.
 
-    setlocal foldlevelstart=99
-    setlocal foldlevel=99
-    setlocal foldmethod=indent
-<
 ------------------------------------------------------------------------------
                                                         *'pymode_options_other'*
 Values: 0 or 1.
