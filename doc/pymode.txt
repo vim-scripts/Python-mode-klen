@@ -6,7 +6,7 @@
    (__)   (__)  (__) (_) (_)(_____)(_)\_)   (_/\/\_)(_____)(____/(____)     ~
 
 
-                          Version: 0.6.0
+                          Version: 0.6.1
 
 ==============================================================================
 CONTENTS                                                  *Python-mode-contents*
@@ -76,6 +76,8 @@ PythonMode. These options should be set in your vimrc.
 |'pymode_lint_hold'|                Hold cursor in current window
 
 |'pymode_lint_minheight'|           Minimal height of pylint error window
+
+|'pymode_lint_mccabe_complexity'|   Maximum allowed mccabe complexity
 
 |'pymode_lint_maxheight'|           Maximal height of pylint error window
 
@@ -242,6 +244,13 @@ Values: int
 Default: 3.
 
 Set minimal height for pylint cwindow
+
+------------------------------------------------------------------------------
+                                               *'pymode_lint_mccabe_complexity'*
+Values: int
+Default: 8.
+
+Set minimal complexity for mccabe linter.
 
 ------------------------------------------------------------------------------
                                                        *'pymode_lint_maxheight'*
@@ -456,6 +465,10 @@ You may set |exrc| and |secure| in your |vimrc| for auto set custom settings fro
     Pyflakes:
         Copyright (c) 2005 Divmod, Inc.
         http://www.divmod.com/
+
+    PEP8:
+        Copyright (C) 2006 Johann C. Rocholl <johann@rocholl.net>
+        http://github.com/jcrocholl/pep8
 
     Python syntax for vim:
         Copyright (c) 2010 Dmitry Vasiliev
