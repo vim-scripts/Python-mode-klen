@@ -1,4 +1,4 @@
-let g:pymode_version = "0.6.3"
+let g:pymode_version = "0.6.4"
 
 com! PymodeVersion echomsg "Current python-mode version: " . g:pymode_version
 
@@ -36,6 +36,9 @@ endif
 
 " DESC: Fix python path
 if !pymode#Default('g:pymode_path', 1) || g:pymode_path
+
+    call pymode#Default('g:pymode_paths', [])
+
 python << EOF
 import sys, vim, os
 
@@ -43,8 +46,9 @@ curpath = vim.eval("getcwd()")
 libpath = os.path.join(os.path.dirname(os.path.dirname(
     vim.eval("expand('<sfile>:p')"))), 'pylibs')
 
-sys.path = [libpath, curpath] + sys.path
+sys.path = [libpath, curpath] + vim.eval("g:pymode_paths") + sys.path
 EOF
+
 endif
 
 
@@ -95,7 +99,7 @@ if !pymode#Default("g:pymode_lint", 1) || g:pymode_lint
     call pymode#Default("g:pymode_lint_mccabe_complexity", 8)
 
     " OPTION: g:pymode_lint_signs -- bool. Place error signs
-    if !pymode#Default("g:pymode_lint_signs", 1) || g:pymode_lint_signs
+    if (!pymode#Default("g:pymode_lint_signs", 1) || g:pymode_lint_signs) && has('signs')
 
         " DESC: Signs definition
         sign define W text=WW texthl=Todo

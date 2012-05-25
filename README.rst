@@ -78,7 +78,7 @@ Manually
 ::
 
     % git clone git://github.com/klen/python-mode.git
-    % cd python-mode.vim
+    % cd python-mode
     % cp -R * ~/.vim
 
 Then rebuild **helptags** in vim::
@@ -262,6 +262,9 @@ Other stuff
 -----------
 
 Default values: ::
+
+    " Additional python paths
+    let g:pymode_paths = []
 
     " Load breakpoints plugin
     let g:pymode_breakpoint = 1
