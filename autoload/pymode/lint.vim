@@ -5,7 +5,7 @@ fun! pymode#lint#Check() "{{{
 
     if &modifiable && &modified
         try
-            write
+            noautocmd write
         catch /E212/
             echohl Error | echo "File modified and I can't save it. Cancel code checking." | echohl None
             return 0
@@ -14,6 +14,7 @@ fun! pymode#lint#Check() "{{{
 
     let g:pymode_lint_buffer = bufnr('%')
 
+    py from pymode import lint
     py lint.check_file()
 
 endfunction " }}}
@@ -93,13 +94,15 @@ endfunction " }}}
 fun! pymode#lint#Auto() "{{{
     if &modifiable && &modified
         try
-            write
+            noautocmd write
         catch /E212/
             echohl Error | echo "File modified and I can't save it. Cancel operation." | echohl None
             return 0
         endtry
     endif
+    py from pymode import auto
     py auto.fix_current_file()
     cclose
     edit
+    call pymode#WideMessage("AutoPep8 done.")
 endfunction "}}}
